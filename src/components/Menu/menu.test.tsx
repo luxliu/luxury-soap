@@ -27,6 +27,7 @@ const testMenu = (props: MenuProps) => (
       disabled
     </MenuItem>
     <MenuItem index={2}>last item</MenuItem>
+    <li>hello</li>
   </Menu>
 );
 
