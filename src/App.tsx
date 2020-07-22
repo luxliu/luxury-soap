@@ -2,6 +2,7 @@ import React from 'react';
 import Button, { ButtonType, ButtonSize } from './components/Button/button';
 import Menu from './components/Menu/menu';
 import MenuItem from './components/Menu/menuItem';
+import SubMenu from './components/Menu/subMenu';
 
 const App = () => {
   return (
@@ -29,12 +30,20 @@ const App = () => {
         >
           Disabled Link
         </Button>
-        <Menu defaultIndex={0} onSelect={(index) => console.log(index)}>
-          <MenuItem index={0} disabled>
-            link 1
-          </MenuItem>
-          <MenuItem index={1}>link 2</MenuItem>
-          <MenuItem index={2}>link 3</MenuItem>
+        <Menu onSelect={(index) => console.log(index)}>
+          <MenuItem disabled>link 1</MenuItem>
+          <MenuItem>link 2</MenuItem>
+          <MenuItem>link 3</MenuItem>
+          <SubMenu title="sub menu">
+            <MenuItem disabled>link 1</MenuItem>
+            <MenuItem>link 2</MenuItem>
+            <MenuItem>link 3</MenuItem>
+            <SubMenu title="sub menu">
+              <MenuItem disabled>link 1</MenuItem>
+              <MenuItem>link 2</MenuItem>
+              <MenuItem>link 3</MenuItem>
+            </SubMenu>
+          </SubMenu>
         </Menu>
       </header>
     </div>
