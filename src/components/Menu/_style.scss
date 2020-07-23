@@ -30,12 +30,16 @@
     }
   }
 
+  .luxury-submenu.menu-opened {
+    display: block;
+  }
+
   .luxury-submenu {
-    //display: none;
+    display: none;
     list-style: none;
     padding-left: 0;
     white-space: nowrap;
-    //transition: $menu-transition;
+    transition: $menu-transition;
 
     .menu-item {
       padding: $menu-item-padding-y $menu-item-padding-x;
@@ -87,7 +91,7 @@
   border-bottom: 0px;
   border-right: $menu-border-width solid $menu-border-color;
 
-  .menu-item {
+  > .menu-item {
     border-left: $menu-item-active-border-width solid transparent;
 
     &.is-active,

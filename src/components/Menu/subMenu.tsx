@@ -1,4 +1,4 @@
-import React, { useContext, FunctionComponentElement } from 'react';
+import React, { useContext, useState, FunctionComponentElement } from 'react';
 import classNames from 'classnames';
 import { MenuContext } from './menu';
 import { MenuItemProps } from './menuItem';
@@ -15,18 +15,24 @@ const SubMenu: React.FC<SubMenuProps> = ({
   className,
   children,
 }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
   const context = useContext(MenuContext);
   const classes = classNames('menu-item submenu-item', className, {
     'is-active': context.index === index,
   });
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setMenuOpen(!menuOpen);
+  };
 
   const renderChildren = () => {
+    const subMenuClasses = classNames('luxury-submenu', {
+      'menu-opened': menuOpen,
+    });
     const childrenComponent = React.Children.map(
       children,
       (child, insideIndex) => {
-        const childElement = child as React.FunctionComponentElement<
-          MenuItemProps
-        >;
+        const childElement = child as FunctionComponentElement<MenuItemProps>;
         const { displayName } = childElement.type;
         if (displayName === 'MenuItem' || displayName === 'SubMenu') {
           return React.cloneElement(childElement, {
@@ -40,12 +46,14 @@ const SubMenu: React.FC<SubMenuProps> = ({
       }
     );
 
-    return <ul className="luxury-submenu">{childrenComponent}</ul>;
+    return <ul className={subMenuClasses}>{childrenComponent}</ul>;
   };
 
   return (
     <li key={index} className={classes}>
-      <div className="submenu-title">{title}</div>
+      <div className="submenu-title" onClick={handleClick}>
+        {title}
+      </div>
       {renderChildren()}
     </li>
   );
