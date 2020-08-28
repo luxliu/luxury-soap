@@ -4,10 +4,12 @@ import {
   RenderResult,
   fireEvent,
   cleanup,
+  wait,
 } from '@testing-library/react';
 
 import Menu, { MenuProps } from './menu';
 import MenuItem from './menuItem';
+import SubMenu from './subMenu';
 
 const testProps: MenuProps = {
   defaultIndex: '0',
@@ -25,9 +27,27 @@ const testMenu = (props: MenuProps) => (
     <MenuItem>active</MenuItem>
     <MenuItem disabled>disabled</MenuItem>
     <MenuItem>last item</MenuItem>
-    <li>hello</li>
+    <SubMenu title="dropdown">
+      <MenuItem>drop1</MenuItem>
+    </SubMenu>
   </Menu>
 );
+
+const createStyleFile = () => {
+  const cssFile: string = `
+    .luxury-submenu {
+      display:none;
+    }
+    .luxury-submenu.menu-opened {
+      display:block;
+    }
+  `;
+  const style = document.createElement('style');
+  style.type = 'text/css';
+  style.innerHTML = cssFile;
+
+  return style;
+};
 
 let wrapper: RenderResult,
   menuItem: HTMLElement,
@@ -37,6 +57,7 @@ let wrapper: RenderResult,
 describe('test Menu and MenuItem component', () => {
   beforeEach(() => {
     wrapper = render(testMenu(testProps));
+    wrapper.container.append(createStyleFile());
     menuItem = wrapper.getByTestId('test-menu');
     activeItem = wrapper.getByText('active');
     disabledItem = wrapper.getByText('disabled');
@@ -45,7 +66,7 @@ describe('test Menu and MenuItem component', () => {
   it('should render correct Menu and MenuItem based on default props', () => {
     expect(menuItem).toBeInTheDocument();
     expect(menuItem).toHaveClass('luxury-menu test');
-    expect(menuItem.getElementsByTagName('li').length).toEqual(3);
+    expect(menuItem.querySelectorAll(':scope > li').length).toEqual(4);
     expect(activeItem).toHaveClass('menu-item is-active');
     expect(disabledItem).toHaveClass('menu-item is-disabled');
   });
@@ -68,5 +89,20 @@ describe('test Menu and MenuItem component', () => {
     const wrapper = render(testMenu(testVerticalProps));
     const menuItem = wrapper.getByTestId('test-menu');
     expect(menuItem).toHaveClass('menu-vertical');
+  });
+
+  it('should show dropdown items when hover on submenu of horizontal menu', async () => {
+    expect(wrapper.queryByText('drop1')).not.toBeVisible();
+    const dropdownElement = wrapper.getByText('dropdown');
+    fireEvent.mouseEnter(dropdownElement);
+    await wait(() => {
+      expect(wrapper.queryByText('drop1')).toBeVisible();
+    });
+    fireEvent.click(wrapper.getByText('drop1'));
+    expect(testProps.onSelect).toHaveBeenCalledWith('3-0');
+    fireEvent.mouseLeave(dropdownElement);
+    await wait(() => {
+      expect(wrapper.queryByText('drop1')).not.toBeVisible();
+    });
   });
 });
