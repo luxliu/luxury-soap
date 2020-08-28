@@ -30,7 +30,10 @@ const App = () => {
         >
           Disabled Link
         </Button>
-        <Menu onSelect={(index) => console.log(index)} mode="vertical">
+        <Menu
+          onSelect={(index) => console.log(index)}
+          defaultOpenSubMenus={['3', '3-3']}
+        >
           <MenuItem disabled>link 1</MenuItem>
           <MenuItem>link 2</MenuItem>
           <MenuItem>link 3</MenuItem>

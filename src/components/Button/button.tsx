@@ -66,4 +66,6 @@ Button.defaultProps = {
   btnType: ButtonType.Default,
 };
 
+Button.displayName = 'Button';
+
 export default Button;
