@@ -18,13 +18,15 @@
     "@types/node": "^12.12.47",
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
+    "git-cz": "^4.7.1",
     "typescript": "^3.7.5"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "commit": "git cz"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -40,5 +42,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "git-cz"
+    }
   }
 }
